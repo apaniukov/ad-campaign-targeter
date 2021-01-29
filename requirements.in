@@ -1,0 +1,8 @@
+fastapi[all]
+iso3166
+
+## dev
+# mypy
+# pytest
+# black
+# isort
