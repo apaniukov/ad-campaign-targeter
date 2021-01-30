@@ -2,10 +2,10 @@ from collections import Counter
 from typing import Dict, Generator, List
 
 from ad_targeter.model import CountriesClusters, countries_clusters
-from ad_targeter.schemas import AdCampaign, AdCampaignsRequest
+from ad_targeter.schemas.targeter import AdCampaign, AdCampaignsRequest
 
 
-class ClusteringService:
+class TargeterService:
     def __init__(self, clusters: CountriesClusters) -> None:
         self.countries_clusters = clusters
 
@@ -20,7 +20,7 @@ class ClusteringService:
         return (self.classify_campaign(campaingn) for campaingn in campaingns)
 
 
-class ClusteringPresenter:
+class TargeterPresenter:
     def __call__(
         self, campaigns: AdCampaignsRequest, clusters: Generator[int, None, None]
     ) -> List[Dict[str, int]]:
@@ -33,5 +33,5 @@ class ClusteringPresenter:
         ]
 
 
-clusterer = ClusteringService(countries_clusters)
-presenter = ClusteringPresenter()
+targeter = TargeterService(countries_clusters)
+presenter = TargeterPresenter()

@@ -1,37 +1,35 @@
 import csv
-from typing import Dict, Generator, List, Union
-
-from iso3166 import countries  # type: ignore
+from itertools import groupby
+from pathlib import Path
+from typing import Dict, Generator, List, Tuple
 
 from settings import config
 
 
 class CountriesClusters:
     def __init__(self) -> None:
-        self.file = config.cluster_file
-        self.countries = {
-            country: {
-                "full_name": countries.get(country).name
-                if country in countries
-                else None,
-                "cluster_id": cluster_id,
-            }
-            for country, cluster_id in self._get_countries()
+        self.file: Path = config.cluster_file
+        self.country_to_cluster: Dict[str, int] = {
+            country: cluster_id for country, cluster_id in self._get_countries()
+        }
+        self.cluster_to_countries: Dict[int, List[str]] = {
+            cluster_id: [country[0] for country in countries]
+            for cluster_id, countries in groupby(
+                sorted(self.country_to_cluster.items(), key=lambda x: x[1]),
+                key=lambda x: x[1],
+            )
         }
 
-    def _get_countries(self) -> Generator[List[str], None, None]:
+    def _get_countries(self) -> Generator[Tuple[str, int], None, None]:
         yield from self._csv_reader()
 
-    def _csv_reader(self) -> Generator[List[str], None, None]:
+    def _csv_reader(self) -> Generator[Tuple[str, int], None, None]:
         with open(self.file) as f:
             reader = csv.reader(f)
-            yield from reader
-
-    def __getitem__(self, item: str) -> Dict[str, Union[str, int]]:
-        return self.countries[item]
+            yield from ((row[0], int(row[1])) for row in reader)
 
     def get_cluster(self, country):
-        return self.countries[country]["cluster_id"]
+        return self.country_to_cluster[country]
 
 
 countries_clusters = CountriesClusters()
