@@ -10,4 +10,4 @@ lint:
 	flake8 .
 
 static_typing:
-	mypy *.py ad_targeter/*.py
+	mypy *.py ad_targeter/**/*.py

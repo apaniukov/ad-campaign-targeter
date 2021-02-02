@@ -1,0 +1,10 @@
+.venv/
+.mypy_cache/
+.git*/
+.vscode/
+Makefile
+requirements.in
+requirements-dev.txt
+tox.ini
+LICENSE
+.gitignore
