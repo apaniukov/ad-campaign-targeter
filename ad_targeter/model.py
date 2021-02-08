@@ -8,7 +8,7 @@ from settings import config
 
 class CountriesClusters:
     def __init__(self) -> None:
-        self.file: Path = config.cluster_file
+        self.file: Path = config.CLUSTER_FILE
         self.country_to_cluster: Dict[str, int] = {
             country: cluster_id for country, cluster_id in self._get_countries()
         }

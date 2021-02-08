@@ -18,7 +18,7 @@ def get_all_clusters(full_names: Optional[bool] = False):
     ]
 
 
-@router.get("{cluster_id}", response_model=ClusterResponse)
+@router.get("/{cluster_id}", response_model=ClusterResponse)
 def get_cluster(cluster_id: int, full_names: Optional[bool] = False):
     try:
         countries = countries_clusters.cluster_to_countries[cluster_id]
